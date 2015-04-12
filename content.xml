@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="../../content.xsl"?>
+<content id="UTSkillWhatever" name="Skill Whatever" description="My Approach for a better Skill reveal and managment" author="UniTrader" date="2015-04-12" version="10" save="false" uninstaller="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://utnas/~unitrader/XRebirthxsds/content.xsd">
+  <text language="44" name="Skill Whatever" description="My Approach for a better Skill reveal and managment" author="UniTrader">
+    <info site="forum.egosoft.com" url="http://forum.egosoft.com/viewtopic.php?t=379177" />
+  </text>
+  <text language="49" name="Skillwasauchimmer" description="Mein ansatz für eine bessere Skillaufdeckung und managment" author="UniTrader">
+    <info site="forum.egosoft.com" url="http://forum.egosoft.com/viewtopic.php?t=379177" />
+  </text>
+</content>
