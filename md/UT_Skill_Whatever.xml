@@ -52,6 +52,7 @@
               <remove_value name="$irrelevantskills.indexof.{$skill}"/>
             </do_else>
           </do_while>
+          <show_notification caption="'Skills changed'" details="'%1: %2\n%3: %4\n%5: %6\n%7: %8\n%9: %10\n%11: %12\n%13: %14\n%1 5: %16\n%17: %18\n%19: %20\n'.[skilltype.boarding.name , player.entity.skill.{skilltype.boarding} , skilltype.combat.name , player.entity.skill.{skilltype.combat} , skilltype.engineering.name , player.entity.skill.{skilltype.engineering} , skilltype.leadership.name , player.entity.skill.{skilltype.leadership} , skilltype.management.name , player.entity.skill.{skilltype.management} , skilltype.morale.name , player.entity.skill.{skilltype.morale} , skilltype.navigation.name , player.entity.skill.{skilltype.navigation} , skilltype.science.name , player.entity.skill.{skilltype.science} ]" />
         </do_if>
       </actions>
     </cue>
@@ -70,7 +71,7 @@
       <actions>
         <set_value name="$bonus" exact="event.param2.{4}"/>
         <do_if value="not event.param2.{7}" comment="no $stepsleft - smalltalk is over">
-          <do_if value="event.param2.{4} ge 3 and event.param2.{3} lt" comment="successful smalltalk without penalty">
+          <do_if value="event.param2.{4} ge 3 and event.param2.{3} lt 1" comment="successful smalltalk without penalty">
             <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
           </do_if>
           <do_if value="event.param2.{4} ge 5 and event.param2.{3} lt 1" comment="very successful smalltalk without penalty">
@@ -82,17 +83,18 @@
         </do_if>
       </actions>
     </cue>
-    <cue name="Event_Conversation_started">
+    <cue name="Event_Conversation_started" instantiate="true">
       <conditions>
         <event_conversation_started/>
       </conditions>
       <actions>
+        <set_value name="$actor" exact="event.object" />
         <set_value name="$revealskills" exact="true"/>
         <set_value name="$relevantskills" exact="$actor.type.skilltypes"/>
         <do_if value="$relevantskills.count">
           <!-- reveal skills when relevant skills of player are higher -->
           <do_all exact="$relevantskills.count" counter="$i">
-            <do_if value="$actor.skill.{$relevantskills..{$i}} gt player.entity.skill.{$relevantskills..{$i}}">
+            <do_if value="$actor.skill.{$relevantskills.{$i}} gt player.entity.skill.{$relevantskills.{$i}}">
               <set_value name="$revealskills" exact="false"/>
             </do_if>
           </do_all>
