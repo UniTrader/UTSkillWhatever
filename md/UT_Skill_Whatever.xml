@@ -102,6 +102,7 @@
     <cue name="Event_Conversation_started" instantiate="true">
       <conditions>
         <event_conversation_started/>
+        <check_value value="player.entity.container.isclass.station" comment="only when talking personally"/>
       </conditions>
       <actions>
         <set_value name="$actor" exact="event.object"/>
