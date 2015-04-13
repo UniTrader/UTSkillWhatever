@@ -24,27 +24,27 @@
       <actions>
         <set_value name="$actor" exact="event.param"/>
         <set_value name="$relevantskills" exact="$actor.type.skilltypes"/>
-        <set_value name="$irrelevantskills" exact="[skilltype.boarding , skilltype.combat , skilltype.engineering , skilltype.leadership , skilltype.management , skilltype.morale , skilltype.navigation , skilltype.science]"/>
-        <do_all exact="$relevantskills.count" counter="$i">
-          <remove_value name="$irrelevantskills.indexof.{$relevantskills.{$i}}"/>
+        <set_value name="$irrelevantskills" exact="[ skilltype.boarding , skilltype.combat , skilltype.engineering , skilltype.leadership , skilltype.management , skilltype.morale , skilltype.navigation , skilltype.science ]"/>
+        <do_all exact="$relevantskills.count" counter="$i" reverse="false">
+          <remove_value name="$irrelevantskills.{$irrelevantskills.indexof.{$relevantskills.{$i}}}"/>
           <!-- if player has already 5 Stars in this Skill - remove it -->
           <do_if value="player.entity.skill.{$relevantskills.{$i}} ge 5">
-            <remove_value name="$relevantskills.indexof.{$relevantskills.{$i}}"/>
+            <remove_value name="$relevantskills.{$relevantskills.indexof.{$relevantskills.{$i}}}"/>
           </do_if>
         </do_all>
         <!-- if there are no relevant skills to improve - dont do anything -->
         <do_if value="$relevantskills.count">
           <do_any>
-            <add_skill entity="player.entity" type="$relevantskills.{1}" weight="$actor.skillrelevance.{$relevantskills.{1}}"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{2}" weight="@$actor.skillrelevance.{@$relevantskills.{2}}" comment="may not exist"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{3}" weight="@$actor.skillrelevance.{@$relevantskills.{3}}" comment="may not exist"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{4}" weight="@$actor.skillrelevance.{@$relevantskills.{4}}" comment="should not exist - just in case for compatibility"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{5}" weight="@$actor.skillrelevance.{@$relevantskills.{5}}" comment="should not exist - just in case for compatibility"/>
+            <add_skill entity="player.entity" type="$relevantskills.{1}" exact="player.entity.skill.{$relevantskills.{1}} + 1" weight="$actor.type.skillrelevance.{$relevantskills.{1}}"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{2}" exact="@player.entity.skill.{@$relevantskills.{2}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{2}}" comment="may not exist"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{3}" exact="@player.entity.skill.{@$relevantskills.{3}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{3}}" comment="may not exist"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{4}" exact="@player.entity.skill.{@$relevantskills.{4}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{4}}" comment="should not exist - just in case for compatibility"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{5}" exact="@player.entity.skill.{@$relevantskills.{5}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{5}}" comment="should not exist - just in case for compatibility"/>
           </do_any>
           <!-- If the Player total Skill is over 25 - reduce a Skill not relevant to the NPC the player just interacted with -->
-          <do_while value="player.entity.skill.boarding+player.entity.skill.combat+player.entity.skill.engineering + player.entity.skill.leadership + player.entity.skill.management+player.entity.skill.morale + player.entity.skill.navigation + player.entity.skill.science gt 25">
+          <do_while value="player.entity.skill.boarding + player.entity.skill.combat+player.entity.skill.engineering + player.entity.skill.leadership + player.entity.skill.management+player.entity.skill.morale + player.entity.skill.navigation + player.entity.skill.science gt 25">
             <set_value name="$skill" exact="$irrelevantskills.random"/>
-            <do_if value="player.entity.skill.{$skill}">
+            <do_if value="player.entity.skill.{$skill} gt 0">
               <add_skill entity="entity.player" type="$irrelevantskills.random" exact="-1"/>
             </do_if>
             <!-- if player skill is 0 in this remove skill from the choices -->
@@ -52,7 +52,17 @@
               <remove_value name="$irrelevantskills.indexof.{$skill}"/>
             </do_else>
           </do_while>
-          <show_notification caption="'Skills changed'" details="'%1: %2\n%3: %4\n%5: %6\n%7: %8\n%9: %10\n%11: %12\n%13: %14\n%1 5: %16\n%17: %18\n%19: %20\n'.[skilltype.boarding.name , player.entity.skill.{skilltype.boarding} , skilltype.combat.name , player.entity.skill.{skilltype.combat} , skilltype.engineering.name , player.entity.skill.{skilltype.engineering} , skilltype.leadership.name , player.entity.skill.{skilltype.leadership} , skilltype.management.name , player.entity.skill.{skilltype.management} , skilltype.morale.name , player.entity.skill.{skilltype.morale} , skilltype.navigation.name , player.entity.skill.{skilltype.navigation} , skilltype.science.name , player.entity.skill.{skilltype.science} ]" />
+        <show_notification caption="{1001,1918}" details="[ 
+         '%2   %1'.[skilltype.boarding.name , player.entity.skill.{skilltype.boarding}] ,
+         '%2   %1'.[skilltype.combat.name , player.entity.skill.{skilltype.combat}] ,
+         '%2   %1'.[skilltype.engineering.name , player.entity.skill.{skilltype.engineering}] ,
+         '%2   %1'.[skilltype.leadership.name , player.entity.skill.{skilltype.leadership}] ,
+         '%2   %1'.[skilltype.management.name , player.entity.skill.{skilltype.management}] ,
+         '%2   %1'.[skilltype.morale.name , player.entity.skill.{skilltype.morale}] ,
+         '%2   %1'.[skilltype.navigation.name , player.entity.skill.{skilltype.navigation}] ,
+         '%2   %1'.[skilltype.science.name , player.entity.skill.{skilltype.science}] 
+        ]"/>
+        <debug_text filter="general" text="'\n' + skilltype.boarding.name + ': ' + player.entity.skill.{skilltype.boarding}+ '\n' + skilltype.combat.name + ': ' + player.entity.skill.{skilltype.combat}+ '\n' + skilltype.engineering.name + ': ' + player.entity.skill.{skilltype.engineering}+ '\n' + skilltype.leadership.name + ': ' + player.entity.skill.{skilltype.leadership}+ '\n' + skilltype.management.name + ': ' + player.entity.skill.{skilltype.management}+ '\n' + skilltype.morale.name + ': ' + player.entity.skill.{skilltype.morale}+ '\n' + skilltype.navigation.name + ': ' + player.entity.skill.{skilltype.navigation}+ '\n' + skilltype.science.name + ': ' + player.entity.skill.{skilltype.science} "/>
         </do_if>
       </actions>
     </cue>
@@ -69,17 +79,24 @@
         <event_conversation_next_section section="gSmalltalk_step"/>
       </conditions>
       <actions>
-        <set_value name="$bonus" exact="event.param2.{4}"/>
-        <do_if value="not event.param2.{7}" comment="no $stepsleft - smalltalk is over">
-          <do_if value="event.param2.{4} ge 3 and event.param2.{3} lt 1" comment="successful smalltalk without penalty">
-            <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
+        <!--                                  1          2                   3              4               5                     6                   7                8 -->
+        <!-- event.param2 == [path, followupfactor, penalty, bonus, basechoices, basechoiceidx, stepsleft, rewarddata] -->
+        <do_if value="not( event.param2.{7} gt 0 and not (event.param2.{7} == 1 and event.param2.{3} == 0))" comment="no $stepsleft - smalltalk is over (taken from Vanilla Files and inverted)">
+          <do_if value="event.param2.{4} ge 5" comment="hard Smalltalk">
+            <do_if value="event.param2.{4} ge 5 and not event.param2.{3}" comment="successful smalltalk without penalty">
+              <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
+            </do_if>
+            <do_if value="event.param2.{4} ge 7 and event.param2.{3} le 1" comment="very successful smalltalk, little penalty">
+              <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
+            </do_if>
           </do_if>
-          <do_if value="event.param2.{4} ge 5 and event.param2.{3} lt 1" comment="very successful smalltalk without penalty">
-            <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
-          </do_if>
-          <do_if value="event.param2.{4} gt 7 and event.param2.{3} le 1" comment="extremely successful smalltalk with little penalty">
-            <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
-          </do_if>
+          <do_else>
+            <do_if value="event.param2.{4} ge 1 and not event.param2.{3}" comment="successful smalltalk without penalty">
+              <signal_cue_instantly cue="Change_Player_Skills" param="event.object" comment="simply pass through the actor"/>
+              <add_inventory entity="player.entity" ware="ware.inv_haze" exact="1" comment="FOR TESTING ONLY"/>
+            </do_if>
+          </do_else>
+        <debug_text filter="general" text="'Smalltalk result: Bonus: %1 Penalty: %2'.[event.param2.{4},event.param2.{3}]"/>
         </do_if>
       </actions>
     </cue>
@@ -88,7 +105,7 @@
         <event_conversation_started/>
       </conditions>
       <actions>
-        <set_value name="$actor" exact="event.object" />
+        <set_value name="$actor" exact="event.object"/>
         <set_value name="$revealskills" exact="true"/>
         <set_value name="$relevantskills" exact="$actor.type.skilltypes"/>
         <do_if value="$relevantskills.count">
@@ -100,6 +117,7 @@
           </do_all>
           <do_if value="$revealskills">
             <set_skills_visible entity="$actor" visible="true"/>
+            <show_help custom="{1003,122}"/>
           </do_if>
         </do_if>
       </actions>
