@@ -36,11 +36,11 @@
         <do_if value="$relevantskills.count">
           <do_any>
             <!-- Skill #2 and #3 may not exist, therefore Error suppression; Skill #4 and #5 are just in case someone introduces that in the future -->
-            <add_skill entity="player.entity" type="$relevantskills.{1}" exact="player.entity.skill.{$relevantskills.{1}} + 1" weight="$actor.type.skillrelevance.{$relevantskills.{1}} * ( 5 - player.entity.skill.{$relevantskills.{1} )"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{2}" exact="@player.entity.skill.{@$relevantskills.{2}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{2}} * ( 5 - @player.entity.skill.{@$relevantskills.{2} )"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{3}" exact="@player.entity.skill.{@$relevantskills.{3}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{3}} * ( 5 - @player.entity.skill.{@$relevantskills.{3} )"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{4}" exact="@player.entity.skill.{@$relevantskills.{4}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{4}} * ( 5 - @player.entity.skill.{@$relevantskills.{4} )"/>
-            <add_skill entity="player.entity" type="@$relevantskills.{5}" exact="@player.entity.skill.{@$relevantskills.{5}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{5}} * ( 5 - @player.entity.skill.{@$relevantskills.{5} )"/>
+            <add_skill entity="player.entity" type="$relevantskills.{1}" exact="player.entity.skill.{$relevantskills.{1}} + 1" weight="$actor.type.skillrelevance.{$relevantskills.{1}} * ( 5 - player.entity.skill.{$relevantskills.{1}} )"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{2}" exact="@player.entity.skill.{@$relevantskills.{2}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{2}} * ( 5 - @player.entity.skill.{@$relevantskills.{2}} )"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{3}" exact="@player.entity.skill.{@$relevantskills.{3}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{3}} * ( 5 - @player.entity.skill.{@$relevantskills.{3}} )"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{4}" exact="@player.entity.skill.{@$relevantskills.{4}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{4}} * ( 5 - @player.entity.skill.{@$relevantskills.{4}} )"/>
+            <add_skill entity="player.entity" type="@$relevantskills.{5}" exact="@player.entity.skill.{@$relevantskills.{5}} + 1" weight="@$actor.type.skillrelevance.{@$relevantskills.{5}} * ( 5 - @player.entity.skill.{@$relevantskills.{5}} )"/>
           </do_any>
           <!-- If the Player total Skill is over 25 - reduce a Skill not relevant to the NPC the player just interacted with -->
           <do_while value="player.entity.skill.boarding + player.entity.skill.combat+player.entity.skill.engineering + player.entity.skill.leadership + player.entity.skill.management+player.entity.skill.morale + player.entity.skill.navigation + player.entity.skill.science gt 25">
